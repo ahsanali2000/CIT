@@ -1,18 +1,17 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Student extends Person{
     int studentId;
-    Person person;
     String address;
     String phone;
-    ArrayList<Course> courses;
+    ArrayList<StudentCourse> courses;
 
-    public Student(String firstName, String lastName, Date dateOfBirth, String cityOfBirth, int studentId, Person person, String address, String phone, ArrayList<Course> courses) {
+    public Student(int studentId,String firstName, String lastName, Date dateOfBirth, String cityOfBirth, String address, String phone, ArrayList<StudentCourse> courses) {
         super(firstName, lastName, dateOfBirth, cityOfBirth);
         this.studentId = studentId;
-        this.person = person;
         this.address = address;
         this.phone = phone;
         this.courses = courses;
@@ -20,6 +19,7 @@ public class Student extends Person{
 
     public Student() {
     }
+
 
     public int getStudentId() {
         return studentId;
@@ -29,13 +29,6 @@ public class Student extends Person{
         this.studentId = studentId;
     }
 
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
 
     public String getAddress() {
         return address;
@@ -53,39 +46,65 @@ public class Student extends Person{
         this.phone = phone;
     }
 
-    public ArrayList<Course> getCourses() {
+    public ArrayList<StudentCourse> getCourses() {
         return courses;
     }
 
-    public void setCourses(ArrayList<Course> courses) {
+    public void setCourses(ArrayList<StudentCourse> courses) {
         this.courses = courses;
     }
-    public void setAll(String firstName, String lastName, Date dateOfBirth, String cityOfBirth, int studentId, Person person, String address, String phone, ArrayList<Course> courses) {
+    public void setAll(String firstName, String lastName, Date dateOfBirth, String cityOfBirth, int studentId, Person person, String address, String phone, ArrayList<StudentCourse> courses) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.cityOfBirth = cityOfBirth;
         this.dateOfBirth = dateOfBirth;
         this.studentId = studentId;
-        this.person = person;
         this.address = address;
         this.phone = phone;
         this.courses = courses;
     }
     public List<Object> getAll(){
-        return Arrays.asList(firstName, lastName, dateOfBirth, cityOfBirth, studentId, person , address, phone, courses);
+        String coursesString = "[";
+        for (int i = 0; i < courses.size(); i++) {
+            coursesString+="{\t" +
+                    "courseId=" + courses.get(i).courseId+ "\t" +
+                    "courseName='" + courses.get(i).courseName + "\t" +
+                    "courseTrack=" + courses.get(i).courseTrack + "\t" +
+                    "courseCredit=" + courses.get(i).courseCredit + "\t" +
+                    "courseScore=" + courses.get(i).courseScore + "\t" +
+                    "courseGPA=" + courses.get(i).courseGPA + "\t" +
+                    "courseSession='" + courses.get(i).courseSession + "\t" +
+                    "courseStatus=" + courses.get(i).courseStatus+
+                    "\t}";
+        }
+        coursesString+="]";
+        return Arrays.asList(studentId,firstName, lastName, dateOfBirth, cityOfBirth, address, phone, coursesString);
     }
 
     public String print() {
-        return "Student{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", cityOfBirth='" + cityOfBirth + '\'' +
-                ", studentId=" + studentId +
-                ", person=" + person +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
-                ", courses=" + courses +
+        String coursesString = "[\n";
+        for (int i = 0; i < courses.size(); i++) {
+            coursesString+="\t{\n" +
+                    "\tcourseId=" + courses.get(i).courseId+ ",\n" +
+                    "\tcourseName='" + courses.get(i).courseName + ",\n" +
+                    "\tcourseTrack=" + courses.get(i).courseTrack + ",\n" +
+                    "\tcourseCredit=" + courses.get(i).courseCredit + ",\n" +
+                    "\tcourseScore=" + courses.get(i).courseScore + ",\n" +
+                    "\tcourseGPA=" + courses.get(i).courseGPA + ",\n" +
+                    "\tcourseSession='" + courses.get(i).courseSession + ",\n" +
+                    "\tcourseStatus=" + courses.get(i).courseStatus+ "\n" +
+                    "\t}\n";
+        }
+        coursesString+="]";
+        return "Student {\n" +
+                "firstName='" + firstName + ",\n" +
+                "lastName='" + lastName + ",\n" +
+                "dateOfBirth=" + dateOfBirth + ",\n" +
+                "cityOfBirth='" + cityOfBirth + ",\n" +
+                "studentId=" + studentId + ",\n" +
+                "address='" + address + ",\n" +
+                "phone='" + phone + ",\n" +
+                "courses = " + coursesString + "\n" +
                 '}';
     }
 }

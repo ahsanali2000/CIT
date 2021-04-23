@@ -3,15 +3,15 @@ import java.util.List;
 
 public class Course {
     int courseId;
-    int courseScore;
-    int courseGPA;
-    String courseSession;
+    String courseName;
+    Track courseTrack;
+    int courseCredit;
 
-    public Course(int courseId, int courseScore, int courseGPA, String courseSession) {
+    public Course(int courseId, String courseName, Track courseTrack, int courseCredit) {
         this.courseId = courseId;
-        this.courseScore = courseScore;
-        this.courseGPA = courseGPA;
-        this.courseSession = courseSession;
+        this.courseName = courseName;
+        this.courseTrack = courseTrack;
+        this.courseCredit = courseCredit;
     }
 
     public Course() {
@@ -25,52 +25,48 @@ public class Course {
         this.courseId = courseId;
     }
 
-    public int getCourseScore() {
-        return courseScore;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourseScore(int courseScore) {
-        this.courseScore = courseScore;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public int getCourseGPA() {
-        return courseGPA;
+    public Track getCourseTrack() {
+        return courseTrack;
     }
 
-    public void setCourseGPA(int courseGPA) {
-        this.courseGPA = courseGPA;
+    public void setCourseTrack(Track courseTrack) {
+        this.courseTrack = courseTrack;
     }
 
-    public String getCourseSession() {
-        return courseSession;
+    public int getCourseCredit() {
+        return courseCredit;
     }
 
-    public void setCourseSession(String courseSession) {
-        this.courseSession = courseSession;
+    public void setCourseCredit(int courseCredit) {
+        this.courseCredit = courseCredit;
     }
 
-    public void setAll(int courseId, int courseScore, int courseGPA, String courseSession) {
+    public void setAll(int courseId, String courseName, Track courseTrack, int courseCredit) {
         this.courseId = courseId;
-        this.courseScore = courseScore;
-        this.courseGPA = courseGPA;
-        this.courseSession = courseSession;
+        this.courseName = courseName;
+        this.courseTrack = courseTrack;
+        this.courseCredit = courseCredit;
     }
     public List<Object> getAll(){
-        return Arrays.asList(courseId, courseScore, courseGPA, courseSession);
+        return Arrays.asList(courseId, courseName, courseTrack, courseCredit);
     }
+
+
 
     public String print() {
         return "Course{" +
                 "courseId=" + courseId +
-                ", courseScore=" + courseScore +
-                ", courseGPA=" + courseGPA +
-                ", courseSession='" + courseSession + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", courseTrack=" + courseTrack.print() +
+                ", courseCredit=" + courseCredit +
                 '}';
     }
-}
-enum courseStatus {
-    done,
-    inProgress,
-    failed,
-    dropped
 }
