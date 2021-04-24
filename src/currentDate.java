@@ -1,6 +1,6 @@
 import java.time.LocalDate;
 
-public class Date {
+public class currentDate {
 
     public static LocalDate curretDate(){
         LocalDate myObj = LocalDate.now();

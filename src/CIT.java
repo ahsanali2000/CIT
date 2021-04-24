@@ -1,3 +1,5 @@
+import javafx.beans.binding.DoubleExpression;
+
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
@@ -131,7 +133,7 @@ public class CIT {
                                     new Track(Integer.parseInt(strings[2].split("-")[0]), strings[2].split("-")[1]),
                                     Integer.parseInt(strings[3]),
                                     Integer.parseInt(strings[4]),
-                                    Float.parseFloat(strings[5]),
+                                    Double.parseDouble(strings[5]),
                                     strings[6],
                                     courseStatus.valueOf(strings[7])
                             );
@@ -609,7 +611,7 @@ public class CIT {
                 ArrayList<StudentCourse> givenCourses = new ArrayList<>();
                 for(int index: selectedCoursesIndex[0]){
                     Course temp = courses.get(index);
-                    givenCourses.add(new StudentCourse(temp.courseId,temp.courseName, temp.courseTrack, temp.courseCredit, 0,0,"Spring 2021",courseStatus.inProgress));
+                    givenCourses.add(new StudentCourse(temp.courseId,temp.courseName, temp.courseTrack, temp.courseCredit, 0,0.0,"Spring 2021",courseStatus.inProgress));
                 }
                 students.add(new Student(givenStudentId,givenFirstName,givenLastName,givenDOB,givenCity,givenAddress,givenPhone,givenCourses));
                 addStudentFrame.dispose();
@@ -928,17 +930,21 @@ public class CIT {
                         selectedStudents.add(student.print());
                     }
                 }
-                String[] selectedStudentsList = null;
+                String selectedStudentsString = "";
                 if (selectedStudents.size()>0){
-                    selectedStudentsList = new String[selectedStudents.size()];
                     for (int i = 0; i < selectedStudents.size(); i++) {
-                        selectedStudentsList[i] = selectedStudents.get(i);
+                        selectedStudentsString+= selectedStudents.get(i);
                     }
                 }else{
-                    selectedStudentsList = new String[]{"No result Found!!!"};
+                    selectedStudentsString = "No result Found!!!";
                 }
-                JList<String> items = new JList<String>(selectedStudentsList);
-                JOptionPane.showMessageDialog(null, new JScrollPane(items));
+
+                JTextArea textArea = new JTextArea(6, 25);
+                textArea.setText(selectedStudentsString);
+                textArea.setEditable(false);
+
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea) , "Result", JOptionPane.OK_CANCEL_OPTION);
+
             });
 
 
@@ -963,17 +969,20 @@ public class CIT {
                         selectedFaculty.add(faculty.print());
                     }
                 }
-                String[] selectedStudentsList = null;
+                String selectedStudentsString = "";
                 if (selectedFaculty.size()>0){
-                    selectedStudentsList = new String[selectedFaculty.size()];
                     for (int i = 0; i < selectedFaculty.size(); i++) {
-                        selectedStudentsList[i] = selectedFaculty.get(i);
+                        selectedStudentsString+=selectedFaculty.get(i);
                     }
                 }else{
-                    selectedStudentsList = new String[]{"No result Found!!!"};
+                    selectedStudentsString+="No Result Found!!!";
                 }
-                JList<String> items = new JList<String>(selectedStudentsList);
-                JOptionPane.showMessageDialog(null, new JScrollPane(items));
+
+                JTextArea textArea = new JTextArea(6, 25);
+                textArea.setText(selectedStudentsString);
+                textArea.setEditable(false);
+
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea) , "Result", JOptionPane.OK_CANCEL_OPTION);
 
             });
 
@@ -999,18 +1008,22 @@ public class CIT {
                         selectedCourses.add(course.print());
                     }
                 }
-                String[] selectedStudentsList = null;
+                String selectedStudentsString = "";
                 if (selectedCourses.size()>0){
-                    selectedStudentsList = new String[selectedCourses.size()];
                     for (int i = 0; i < selectedCourses.size(); i++) {
-                        selectedStudentsList[i] = selectedCourses.get(i);
+                        selectedStudentsString+= selectedCourses.get(i);
                     }
                 }else{
-                    selectedStudentsList = new String[]{"No result Found!!!"};
+                    selectedStudentsString = "No result Found!!!";
                 }
-                JList<String> items = new JList<String>(selectedStudentsList);
-                JOptionPane.showMessageDialog(null, new JScrollPane(items));
+                JTextArea textArea = new JTextArea(6, 25);
+                textArea.setText(selectedStudentsString);
+                textArea.setEditable(false);
+
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea) , "Result", JOptionPane.OK_CANCEL_OPTION);
+
             });
+
 
 
             searchFrame.setResizable(false);
@@ -1028,12 +1041,279 @@ public class CIT {
         delete.setFont(new Font("Roboto", Font.BOLD, 20));
         delete.setBackground(Color.WHITE);
         mainFrame.add(delete);
+        delete.addActionListener(e -> {
+            JFrame deleteFrame = new JFrame("CIT");
+
+            deleteFrame.setResizable(false);
+            deleteFrame.setLayout(new BorderLayout());
+            JLabel background_min=new JLabel(new ImageIcon("src/assets/bg-min.jpg"));
+            background_min.setBounds(0,0,576,554);
+            deleteFrame.add(background_min);
+            background_min.setLayout(new FlowLayout());
+            deleteFrame.setSize(576,554);
+            deleteFrame.setVisible(true);
+        });
 
         JButton display = new JButton("Display");
         display.setBounds(825,300,175,50);
         display.setFont(new Font("Roboto", Font.BOLD, 20));
         display.setBackground(Color.WHITE);
         mainFrame.add(display);
+        display.addActionListener(e -> {
+            JFrame displayFrame = new JFrame("CIT");
+
+            JLabel text1 = new JLabel("Display");
+            text1.setFont(new Font("Arial", Font.BOLD, 40));
+            text1.setForeground(Color.WHITE);
+            text1.setBounds(200,10,350,40);
+            displayFrame.add(text1);
+
+            JLabel studentsAgeLabel = new JLabel("Age to show students > age: ");
+            studentsAgeLabel.setForeground(Color.WHITE);
+            studentsAgeLabel.setBounds(30,100,190,40);
+            displayFrame.add(studentsAgeLabel);
+            NumberFormat longFormat = NumberFormat.getIntegerInstance();
+            NumberFormatter numberFormatter = new NumberFormatter(longFormat);
+            numberFormatter.setValueClass(Long.class); //optional, ensures you will always get a long value
+            numberFormatter.setAllowsInvalid(false); //this is the key!!
+            numberFormatter.setMinimum(0l); //Optional
+            JFormattedTextField ageField = new JFormattedTextField(numberFormatter);
+            ageField.setBounds(200,100,200,30);
+            displayFrame.add(ageField);
+            JButton showStudentsAgeButton = new JButton("Display");
+            showStudentsAgeButton.setBounds(410,100,130,30);
+            showStudentsAgeButton.setFont(new Font("Roboto", Font.BOLD, 20));
+            showStudentsAgeButton.setBackground(Color.WHITE);
+            displayFrame.add(showStudentsAgeButton);
+            showStudentsAgeButton.addActionListener(e1 -> {
+                String selectedAgeStudents = "";
+                for(Student student:students){
+                    if(currentDate.curretDate().getYear()-(1900+student.dateOfBirth.getYear())>Integer.parseInt(ageField.getText())){
+                        selectedAgeStudents+= student.studentId+"\t"+student.firstName+"\t"+student.lastName+"\t"+student.dateOfBirth+"\n";
+                    }
+                }
+                if(selectedAgeStudents.equals("")){
+                    selectedAgeStudents+="No result Found!!!";
+                }
+                JTextArea textArea = new JTextArea(6, 25);
+                textArea.setText(selectedAgeStudents);
+                textArea.setEditable(false);
+
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea) , "Result", JOptionPane.OK_CANCEL_OPTION);
+
+            });
+
+
+
+            JLabel courseToStudents = new JLabel("Course To get Students: ");
+            courseToStudents.setForeground(Color.WHITE);
+            courseToStudents.setBounds(30,150,190,40);
+            displayFrame.add(courseToStudents);
+
+            String[] allCources = new String[courses.size()];
+            for (int i = 0; i < courses.size(); i++) {
+                allCources[i]=courses.get(i).courseId+" "+courses.get(i).courseName;
+            }
+            JComboBox courcesDrop = new JComboBox(allCources);
+            courcesDrop.setBounds(200,150,200,30);
+            displayFrame.add(courcesDrop);
+
+            JButton courseToStudentsButton = new JButton("Display");
+            courseToStudentsButton.setBounds(410,150,130,30);
+            courseToStudentsButton.setFont(new Font("Roboto", Font.BOLD, 20));
+            courseToStudentsButton.setBackground(Color.WHITE);
+            displayFrame.add(courseToStudentsButton);
+            courseToStudentsButton.addActionListener(e1 -> {
+                Object givenCourseToStudents = courcesDrop.getSelectedItem();
+                int countOfStudents = 0;
+                String givenCourseToStudentsString = "";
+                for(Student student:students){
+                    for(StudentCourse course:student.courses){
+                        if((course.courseId+" "+course.courseName).equals(givenCourseToStudents)){
+                            givenCourseToStudentsString+=student.studentId+"\t"+student.firstName+"\t"+student.lastName+"\n";
+                            countOfStudents++;
+                        }
+                    }
+                }
+                if(givenCourseToStudentsString.equals("")){
+                    givenCourseToStudentsString+="No Result Found!!!";
+                }else{
+                    givenCourseToStudentsString+="\n\nNumber of students taking this course = "+countOfStudents;
+                }
+
+                JTextArea textArea = new JTextArea(6, 25);
+                textArea.setText(givenCourseToStudentsString);
+                textArea.setEditable(false);
+
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea) , "Result", JOptionPane.OK_CANCEL_OPTION);
+
+
+
+            });
+
+            JLabel courseToFaculty = new JLabel("Course To get Faculty: ");
+            courseToFaculty.setForeground(Color.WHITE);
+            courseToFaculty.setBounds(30,200,190,40);
+            displayFrame.add(courseToFaculty);
+
+
+            JComboBox facultyDrop = new JComboBox(allCources);
+            facultyDrop.setBounds(200,200,200,30);
+            displayFrame.add(facultyDrop);
+
+            JButton courseToFacultyButton = new JButton("Display");
+            courseToFacultyButton.setBounds(410,200,130,30);
+            courseToFacultyButton.setFont(new Font("Roboto", Font.BOLD, 20));
+            courseToFacultyButton.setBackground(Color.WHITE);
+            displayFrame.add(courseToFacultyButton);
+            courseToFacultyButton.addActionListener(e1 -> {
+                Object givenCourseToFaculty = facultyDrop.getSelectedItem();
+                String givenCourseToFacultyString = "";
+                for(Faculty faculty:faculties){
+                    for(Course course:faculty.teachingCourses){
+                        if((course.courseId+" "+course.courseName).equals(givenCourseToFaculty)){
+                            givenCourseToFacultyString+=faculty.firstName+"\t"+faculty.lastName+"\n";
+                        }
+                    }
+                }
+                if(givenCourseToFacultyString.equals("")){
+                    givenCourseToFacultyString+="No Result Found!!!";
+                }
+
+                JTextArea textArea = new JTextArea(6, 25);
+                textArea.setText(givenCourseToFacultyString);
+                textArea.setEditable(false);
+
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea) , "Result", JOptionPane.OK_CANCEL_OPTION);
+
+
+
+            });
+
+
+            JLabel courseToCountStudents = new JLabel("Course/grade To Count: ");
+            courseToCountStudents.setForeground(Color.WHITE);
+            courseToCountStudents.setBounds(30,250,190,40);
+            displayFrame.add(courseToCountStudents);
+
+
+            JComboBox courseToCountStudentsDrop = new JComboBox(allCources);
+            courseToCountStudentsDrop.setBounds(200,250,150,30);
+            displayFrame.add(courseToCountStudentsDrop);
+
+            String[] allGrades = new String[]{"F","E","D","C","C+","B","B+","A"};
+            JComboBox gradeDrop = new JComboBox(allGrades);
+            gradeDrop.setBounds(360,250,40,30);
+            displayFrame.add(gradeDrop);
+
+            JButton courseToCountStudentsButton = new JButton("Count");
+            courseToCountStudentsButton.setBounds(410,250,130,30);
+            courseToCountStudentsButton.setFont(new Font("Roboto", Font.BOLD, 20));
+            courseToCountStudentsButton.setBackground(Color.WHITE);
+            displayFrame.add(courseToCountStudentsButton);
+            courseToCountStudentsButton.addActionListener(e1 -> {
+                Object givenCourseToCount = courseToCountStudentsDrop.getSelectedItem();
+                Object givenGradeToCount = gradeDrop.getSelectedIndex();
+                Double givenGPA = Float.parseFloat(givenGradeToCount.toString())*0.5+0.5;
+
+                int givenCounter = 0;
+                for(Student student:students){
+                    for(StudentCourse course:student.courses){
+                        if((course.courseId+" "+course.courseName).equals(givenCourseToCount) && course.courseGPA.toString().equals(givenGPA.toString())){
+                            givenCounter++;
+                        }
+                    }
+                }
+
+                JTextArea textArea = new JTextArea(6, 25);
+                textArea.setText("Number of students Scored "+allGrades[Integer.parseInt(givenGradeToCount.toString())]+" in selected Course = "+givenCounter);
+
+                textArea.setEditable(false);
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea) , "Result", JOptionPane.OK_CANCEL_OPTION);
+
+
+            });
+
+
+
+
+            JButton studentsGradesButton = new JButton("All Students Grades Details");
+            studentsGradesButton.setBounds(160,300,300,50);
+            studentsGradesButton.setFont(new Font("Roboto", Font.BOLD, 20));
+            studentsGradesButton.setBackground(Color.WHITE);
+            displayFrame.add(studentsGradesButton);
+            studentsGradesButton.addActionListener(event->{
+
+                List<ArrayList<Object>> listOfLists = new ArrayList<ArrayList<Object>>();
+                for(Student student:students){
+                    ArrayList<Object> studentDetials = new ArrayList<>();
+                    int totalCreditHours = 0;
+                    Double averageGPA = 0.0;
+                    for(StudentCourse course:student.courses){
+                        averageGPA+=course.courseGPA;
+                        totalCreditHours+=course.courseCredit;
+                    }
+                    Double length = student.courses.size()/1.0;
+                    averageGPA = averageGPA/length;
+                    studentDetials.add(student.studentId);
+                    studentDetials.add(student.firstName);
+                    studentDetials.add(student.lastName);
+                    studentDetials.add(averageGPA);
+                    studentDetials.add(totalCreditHours);
+                    studentDetials.add(length);
+                    listOfLists.add(studentDetials);
+                }
+                String studentgradesString = "";
+                for(List<Object> objectList:listOfLists){
+                    for(Object object:objectList){
+                            studentgradesString+=object.toString()+"\t";
+                    }
+                    studentgradesString+="\n";
+                }
+                String[] stringOfStrings = studentgradesString.split("\n");
+                ArrayList<String> sorted = new ArrayList<String>();
+
+                for (int i = 0; i < stringOfStrings.length; i++) {
+                    String temp = stringOfStrings[i];
+                    for(String str:stringOfStrings){
+                        if(Integer.parseInt(str.split("\t")[0])<Integer.parseInt(temp.split("\t")[0]) && !str.contains(str)){
+                            temp = str;
+                        }
+                    }
+                    sorted.add(temp);
+                }
+                String sortedFinal = "";
+                for (int i = 0; i < sorted.size(); i++) {
+                    sortedFinal+=sorted.get(i)+"\n";
+                }
+
+                if(sortedFinal.equals("")){
+                    sortedFinal+="No Result Found!!!";
+                }
+
+                JTextArea textArea = new JTextArea(6, 25);
+                textArea.setText(sortedFinal);
+                textArea.setEditable(false);
+
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea) , "Result", JOptionPane.OK_CANCEL_OPTION);
+
+
+            });
+
+
+
+
+
+            displayFrame.setResizable(false);
+            displayFrame.setLayout(new BorderLayout());
+            JLabel background_min=new JLabel(new ImageIcon("src/assets/bg-min.jpg"));
+            background_min.setBounds(0,0,576,554);
+            displayFrame.add(background_min);
+            background_min.setLayout(new FlowLayout());
+            displayFrame.setSize(576,554);
+            displayFrame.setVisible(true);
+
+        });
 
         mainFrame.setResizable(false);
         mainFrame.setLayout(new BorderLayout());
