@@ -53,7 +53,7 @@ public class Student extends Person{
     public void setCourses(ArrayList<StudentCourse> courses) {
         this.courses = courses;
     }
-    public void setAll(String firstName, String lastName, Date dateOfBirth, String cityOfBirth, int studentId, Person person, String address, String phone, ArrayList<StudentCourse> courses) {
+    public void setAll(String firstName, String lastName, Date dateOfBirth, String cityOfBirth, int studentId, String address, String phone, ArrayList<StudentCourse> courses) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.cityOfBirth = cityOfBirth;
@@ -64,38 +64,20 @@ public class Student extends Person{
         this.courses = courses;
     }
     public List<Object> getAll(){
-        String coursesString = "[";
-        for (int i = 0; i < courses.size(); i++) {
-            coursesString+="{\t" +
-                    "courseId=" + courses.get(i).courseId+ "\t" +
-                    "courseName='" + courses.get(i).courseName + "\t" +
-                    "courseTrack=" + courses.get(i).courseTrack + "\t" +
-                    "courseCredit=" + courses.get(i).courseCredit + "\t" +
-                    "courseScore=" + courses.get(i).courseScore + "\t" +
-                    "courseGPA=" + courses.get(i).courseGPA + "\t" +
-                    "courseSession='" + courses.get(i).courseSession + "\t" +
-                    "courseStatus=" + courses.get(i).courseStatus+
-                    "\t}";
+        StringBuilder coursesString = new StringBuilder("[");
+        for (StudentCourse cours : courses) {
+            coursesString.append("{\t" + "courseId=").append(cours.courseId).append("\t").append("courseName='").append(cours.courseName).append("\t").append("courseTrack=").append(cours.courseTrack).append("\t").append("courseCredit=").append(cours.courseCredit).append("\t").append("courseScore=").append(cours.courseScore).append("\t").append("courseGPA=").append(cours.courseGPA).append("\t").append("courseSession='").append(cours.courseSession).append("\t").append("courseStatus=").append(cours.courseStatus).append("\t}");
         }
-        coursesString+="]";
-        return Arrays.asList(studentId,firstName, lastName, dateOfBirth, cityOfBirth, address, phone, coursesString);
+        coursesString.append("]");
+        return Arrays.asList(studentId,firstName, lastName, dateOfBirth, cityOfBirth, address, phone, coursesString.toString());
     }
 
     public String print() {
-        String coursesString = "[\n";
-        for (int i = 0; i < courses.size(); i++) {
-            coursesString+="\t{\n" +
-                    "\tcourseId=" + courses.get(i).courseId+ ",\n" +
-                    "\tcourseName='" + courses.get(i).courseName + ",\n" +
-                    "\tcourseTrack=" + courses.get(i).courseTrack + ",\n" +
-                    "\tcourseCredit=" + courses.get(i).courseCredit + ",\n" +
-                    "\tcourseScore=" + courses.get(i).courseScore + ",\n" +
-                    "\tcourseGPA=" + courses.get(i).courseGPA + ",\n" +
-                    "\tcourseSession='" + courses.get(i).courseSession + ",\n" +
-                    "\tcourseStatus=" + courses.get(i).courseStatus+ "\n" +
-                    "\t}\n";
+        StringBuilder coursesString = new StringBuilder("[\n");
+        for (StudentCourse cours : courses) {
+            coursesString.append("\t{\n" + "\tcourseId=").append(cours.courseId).append(",\n").append("\tcourseName='").append(cours.courseName).append(",\n").append("\tcourseTrack=").append(cours.courseTrack).append(",\n").append("\tcourseCredit=").append(cours.courseCredit).append(",\n").append("\tcourseScore=").append(cours.courseScore).append(",\n").append("\tcourseGPA=").append(cours.courseGPA).append(",\n").append("\tcourseSession='").append(cours.courseSession).append(",\n").append("\tcourseStatus=").append(cours.courseStatus).append("\n").append("\t}\n");
         }
-        coursesString+="]";
+        coursesString.append("]");
         return "Student {\n" +
                 "firstName='" + firstName + ",\n" +
                 "lastName='" + lastName + ",\n" +

@@ -56,7 +56,7 @@ public class Course {
         this.courseCredit = courseCredit;
     }
     public List<Object> getAll(){
-        return Arrays.asList(courseId, courseName, courseTrack, courseCredit);
+        return Arrays.asList(courseId, courseName, "{ TrackId="+courseTrack.trackId+"\t"+ "Track Name="+courseTrack.trackName+"}", courseCredit);
     }
 
 
