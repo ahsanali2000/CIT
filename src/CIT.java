@@ -890,14 +890,15 @@ public class CIT {
         });
 
 
-        JButton edit = new JButton("Edit");
-        edit.setBounds(300,300,150,50);
-        edit.setFont(new Font("Roboto", Font.BOLD, 20));
-        edit.setBackground(Color.WHITE);
-        mainFrame.add(edit);
+//        JButton edit = new JButton("Edit");
+//        edit.setBounds(300,300,150,50);
+//        edit.setFont(new Font("Roboto", Font.BOLD, 20));
+//        edit.setBackground(Color.WHITE);
+//        mainFrame.add(edit);
 
         JButton search = new JButton("Search");
-        search.setBounds(475,300,150,50);
+//        search.setBounds(475,300,150,50);
+        search.setBounds(300,300,200,50);
         search.setFont(new Font("Roboto", Font.BOLD, 20));
         search.setBackground(Color.WHITE);
         mainFrame.add(search);
@@ -1037,12 +1038,100 @@ public class CIT {
         });
 
         JButton delete = new JButton("Delete");
-        delete.setBounds(650,300,150,50);
+//        delete.setBounds(650,300,150,50);
+        delete.setBounds(550,300,200,50);
         delete.setFont(new Font("Roboto", Font.BOLD, 20));
         delete.setBackground(Color.WHITE);
         mainFrame.add(delete);
         delete.addActionListener(e -> {
             JFrame deleteFrame = new JFrame("CIT");
+
+            JLabel text1 = new JLabel("Delete");
+            text1.setFont(new Font("Arial", Font.BOLD, 40));
+            text1.setForeground(Color.WHITE);
+            text1.setBounds(200,10,350,40);
+            deleteFrame.add(text1);
+            JLabel StudentToDelete = new JLabel("Student To Delete: ");
+            StudentToDelete.setForeground(Color.WHITE);
+            StudentToDelete.setBounds(30,100,190,40);
+            deleteFrame.add(StudentToDelete);
+            String[] allStudents = new String[students.size()];
+            for (int i = 0; i < students.size(); i++) {
+                allStudents[i]=students.get(i).studentId+" "+students.get(i).firstName+" "+students.get(i).lastName;
+            }
+            JComboBox delStuDrop = new JComboBox(allStudents);
+            delStuDrop.setBounds(200,100,200,30);
+            deleteFrame.add(delStuDrop);
+            JButton delStuButton = new JButton("Delete");
+            delStuButton.setBounds(410,100,130,30);
+            delStuButton.setFont(new Font("Roboto", Font.BOLD, 20));
+            delStuButton.setBackground(Color.WHITE);
+            deleteFrame.add(delStuButton);
+            delStuButton.addActionListener(e1 -> {
+                for (Student student: students){
+                    if ((student.studentId+" "+student.firstName+" "+student.lastName).equals(delStuDrop.getSelectedItem())){
+                        students.remove(student);
+                        deleteFrame.dispose();
+                    }
+                }
+            });
+
+            JLabel facToDelLebel = new JLabel("Faculty To Delete: ");
+            facToDelLebel.setForeground(Color.WHITE);
+            facToDelLebel.setBounds(30,150,190,40);
+            deleteFrame.add(facToDelLebel);
+            String[] allFaculty = new String[faculties.size()];
+            for (int i = 0; i < faculties.size(); i++) {
+                allFaculty[i]=faculties.get(i).firstName+" "+faculties.get(i).lastName;
+            }
+            JComboBox facDelDrop = new JComboBox(allFaculty);
+            facDelDrop.setBounds(200,150,200,30);
+            deleteFrame.add(facDelDrop);
+            JButton facDelButton = new JButton("Delete");
+            facDelButton.setBounds(410,150,130,30);
+            facDelButton.setFont(new Font("Roboto", Font.BOLD, 20));
+            facDelButton.setBackground(Color.WHITE);
+            deleteFrame.add(facDelButton);
+            facDelButton.addActionListener(e1 -> {
+                for (Faculty faculty: faculties){
+                    if ((faculty.firstName+" "+faculty.lastName).equals(facDelDrop.getSelectedItem())){
+                        faculties.remove(faculty);
+                        deleteFrame.dispose();
+                    }
+                }
+            });
+
+            JLabel courseToDel = new JLabel("Course To Delete: ");
+            courseToDel.setForeground(Color.WHITE);
+            courseToDel.setBounds(30,200,190,40);
+            deleteFrame.add(courseToDel);
+            String[] allCources = new String[courses.size()];
+            for (int i = 0; i < courses.size(); i++) {
+                allCources[i]=courses.get(i).courseId+" "+courses.get(i).courseName;
+            }
+            JComboBox courseToDelDrop = new JComboBox(allCources);
+            courseToDelDrop.setBounds(200,200,200,30);
+            deleteFrame.add(courseToDelDrop);
+            JButton courseToDelButton = new JButton("Delete");
+            courseToDelButton.setBounds(410,200,130,30);
+            courseToDelButton.setFont(new Font("Roboto", Font.BOLD, 20));
+            courseToDelButton.setBackground(Color.WHITE);
+            deleteFrame.add(courseToDelButton);
+            courseToDelButton.addActionListener(e1 -> {
+                for (Course course: courses){
+                    if ((course.courseId+" "+course.courseName).equals(courseToDelDrop.getSelectedItem())){
+                        for(Faculty faculty:faculties){
+                            if(faculty.teachingCourses.contains(course)){
+                                ArrayList<Course> temp = faculty.teachingCourses;
+                                temp.remove(course);
+                                faculty.teachingCourses = temp;
+                            }
+                        }
+                        courses.remove(course);
+                        deleteFrame.dispose();
+                    }
+                }
+            });
 
             deleteFrame.setResizable(false);
             deleteFrame.setLayout(new BorderLayout());
@@ -1055,7 +1144,8 @@ public class CIT {
         });
 
         JButton display = new JButton("Display");
-        display.setBounds(825,300,175,50);
+//        display.setBounds(825,300,175,50);
+        display.setBounds(800,300,200,50);
         display.setFont(new Font("Roboto", Font.BOLD, 20));
         display.setBackground(Color.WHITE);
         mainFrame.add(display);
